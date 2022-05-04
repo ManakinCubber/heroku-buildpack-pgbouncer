@@ -49,8 +49,6 @@ do
   eval POSTGRES_URL_VALUE=\$$POSTGRES_URL
   IFS=':' read DB_USER DB_PASS DB_HOST DB_PORT DB_NAME <<< $(echo $POSTGRES_URL_VALUE | perl -lne 'print "$1:$2:$3:$4:$5" if /^postgres(?:ql)?:\/\/([^:]*):([^@]*)@(.*?):(.*?)\/(.*?)$/')
 
-  DB_SCRAM_PASS=`echo -n ${DB_PASS}${DB_USER} | ./scram-sha-256`
-
   CLIENT_DB_NAME="db${n}"
 
   echo "Setting ${POSTGRES_URL}_PGBOUNCER config var"
@@ -63,7 +61,7 @@ do
   fi
 
   cat >> /app/vendor/pgbouncer/users.txt << EOFEOF
-"$DB_USER" "$DB_SCRAM_PASS"
+"$DB_USER" "$DB_PASS"
 EOFEOF
 
   cat >> /app/vendor/pgbouncer/pgbouncer.ini << EOFEOF
