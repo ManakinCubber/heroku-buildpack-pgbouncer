@@ -15,7 +15,7 @@ cat >> /app/vendor/pgbouncer/pgbouncer.ini << EOFEOF
 [pgbouncer]
 listen_addr = 127.0.0.1
 listen_port = 6000
-auth_type = md5
+auth_type = scram-sha-256
 auth_file = /app/vendor/pgbouncer/users.txt
 server_tls_sslmode = prefer
 server_tls_protocols = secure
@@ -49,7 +49,7 @@ do
   eval POSTGRES_URL_VALUE=\$$POSTGRES_URL
   IFS=':' read DB_USER DB_PASS DB_HOST DB_PORT DB_NAME <<< $(echo $POSTGRES_URL_VALUE | perl -lne 'print "$1:$2:$3:$4:$5" if /^postgres(?:ql)?:\/\/([^:]*):([^@]*)@(.*?):(.*?)\/(.*?)$/')
 
-  DB_MD5_PASS="md5"`echo -n ${DB_PASS}${DB_USER} | md5sum | awk '{print $1}'`
+  DB_SCRAM_PASS=`echo -n ${DB_PASS}${DB_USER} | scram-sha-256`
 
   CLIENT_DB_NAME="db${n}"
 
@@ -63,7 +63,7 @@ do
   fi
 
   cat >> /app/vendor/pgbouncer/users.txt << EOFEOF
-"$DB_USER" "$DB_MD5_PASS"
+"$DB_USER" "$DB_SCRAM_PASS"
 EOFEOF
 
   cat >> /app/vendor/pgbouncer/pgbouncer.ini << EOFEOF
