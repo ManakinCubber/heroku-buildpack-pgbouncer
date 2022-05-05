@@ -47,7 +47,7 @@ echo "-----> pgbouncer-buildpack: Moving the use-pgbouncer script into app/bin"
 cp "$BUILDPACK_DIR/bin/use-pgbouncer" "$BUILD_DIR/bin/"
 chmod +x "$BUILD_DIR/bin/use-pgbouncer"
 
-echo "-----> pgbouncer-buildpack: Moving the use-pgbouncer script into app/bin"
+echo "-----> pgbouncer-buildpack: Vendoring scram-sha-256 into slug"
 cp "$BUILDPACK_DIR/bin/scram-sha-256" "$BUILD_DIR/$VENDORED_SCRAM_SHA_256/bin/"
 chmod +x "$BUILD_DIR/$VENDORED_SCRAM_SHA_256/bin/scram-sha-256"
 
