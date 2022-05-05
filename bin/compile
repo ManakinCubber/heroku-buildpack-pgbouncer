@@ -17,12 +17,14 @@ BUILDPACK_DIR="$(dirname "$(dirname "$0")")"
 
 # vendor directories
 VENDORED_PGBOUNCER="vendor/pgbouncer"
+VENDORED_SCRAM_SHA_256="vendor/scram-sha-256"
 
 # vendor pgbouncer into the slug
-PATH="$BUILD_DIR/$VENDORED_PGBOUNCER/bin:$PATH"
+PATH="$BUILD_DIR/$VENDORED_PGBOUNCER/bin:$BUILD_DIR/$VENDORED_SCRAM_SHA_256/bin:$PATH"
 
 mkdir -p "$BUILD_DIR/bin"
 mkdir -p "$BUILD_DIR/$VENDORED_PGBOUNCER"
+mkdir -p "$BUILD_DIR/$VENDORED_SCRAM_SHA_256/bin"
 
 echo "-----> pgbouncer-buildpack: Vendoring pgbouncer into slug"
 tar xzf pgbouncer-"${STACK}".tgz -C "${BUILD_DIR}"/"${VENDORED_PGBOUNCER}"
@@ -46,7 +48,7 @@ cp "$BUILDPACK_DIR/bin/use-pgbouncer" "$BUILD_DIR/bin/"
 chmod +x "$BUILD_DIR/bin/use-pgbouncer"
 
 echo "-----> pgbouncer-buildpack: Moving the use-pgbouncer script into app/bin"
-cp "$BUILDPACK_DIR/bin/scram-sha-256" "$BUILD_DIR/bin/"
-chmod +x "$BUILD_DIR/bin/scram-sha-256"
+cp "$BUILDPACK_DIR/bin/scram-sha-256" "$BUILD_DIR/$VENDORED_SCRAM_SHA_256/bin/"
+chmod +x "$BUILD_DIR/$VENDORED_SCRAM_SHA_256/bin/scram-sha-256"
 
 echo "-----> pgbouncer-buildpack: done"
