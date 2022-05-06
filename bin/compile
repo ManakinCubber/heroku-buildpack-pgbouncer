@@ -22,7 +22,6 @@ VENDORED_PGBOUNCER="vendor/pgbouncer"
 PATH="$BUILD_DIR/$VENDORED_PGBOUNCER/bin:$PATH"
 
 mkdir -p "$BUILD_DIR/bin"
-mkdir -p "$BUILD_DIR/vendor/bin"
 mkdir -p "$BUILD_DIR/$VENDORED_PGBOUNCER"
 
 echo "-----> pgbouncer-buildpack: Vendoring pgbouncer into slug"
@@ -45,9 +44,5 @@ chmod +x "$BUILD_DIR/bin/start-pgbouncer-stunnel"
 echo "-----> pgbouncer-buildpack: Moving the use-pgbouncer script into app/bin"
 cp "$BUILDPACK_DIR/bin/use-pgbouncer" "$BUILD_DIR/bin/"
 chmod +x "$BUILD_DIR/bin/use-pgbouncer"
-
-echo "-----> pgbouncer-buildpack: Vendoring scram-sha-256 into slug"
-cp "$BUILDPACK_DIR/bin/scram-sha-256" "$BUILD_DIR/vendor/bin/"
-chmod +x "$BUILD_DIR/vendor/bin/scram-sha-256"
 
 echo "-----> pgbouncer-buildpack: done"
